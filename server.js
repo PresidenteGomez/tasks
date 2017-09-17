@@ -16,9 +16,9 @@ app.use(express.static('public'));//public folder
 
 //Routes
 app.use('/', indexRouter);
-app.use('/routeB', thetaskRouter);
+app.use('/thetask', thetaskRouter);
 
 //spin the SERVIE
 app.listen(3001, function (){
     console.log('listening on 3001');
-})
+});

@@ -5,7 +5,7 @@ var path = require('path');
 //require routes
 router.get('/', function (get, res) {
     var indexPath = path.join(__dirname, '../public/views/index.html');
-    console.log(indexPath);
+    console.log('in index.js');
     res.sendFile(indexPath);
     
 })
