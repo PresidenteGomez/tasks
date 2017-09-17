@@ -33,7 +33,7 @@ function addTheTask(){
     });
 }
 
-// $.ajax function
+// $.ajax functions
 function getTasks() {
     console.log('in getTasks function');
     $.ajax({
@@ -45,8 +45,10 @@ function getTasks() {
         //for each item
         for( var i= 0; i< serverResp.length; i++){
             console.log('serverResp[i]', serverResp[i])
+
             //include data-id on the item Div
             var $taskDiv = $('<div>', {text: serverResp[i].task}).data('id', serverResp[i].id);
+
             //include a button with the class deleteMe
             var $delBtn = $('<input>', {type: 'button', class:'deleteMe', value:'Delete'});
 
@@ -59,11 +61,11 @@ function getTasks() {
 }
 
 function deleteTask (){
-    var taskId =$(this).parent().data('id');
-    console.log('in deleteTask', taskId);
+    var thisId =$(this).parent().data('id');
+    console.log('in deleteTask', thisId);
     $.ajax({
         method: 'DELETE',
-        url: '/thetask/' + taskId,
+        url: '/thetask/' + thisId,
         success: function(resp){
             console.log('server response is', resp);
         }

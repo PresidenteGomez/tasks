@@ -1,10 +1,11 @@
 //requires
 var router = require('express').Router();
+var pool = require('..')
 //var path = require('path');//WHY DONT WE NEED A PATH??
 
 //required routes
 router.get('/', function (req, res) {
-    //console.log('in GET thetask route');
+    console.log('in GET thetask route');
     //var thetaskPath = path.join(__dirname, '../public/views/index.html');
     console.log('in GET thetask.js route');//add to thetaskPath into log??maybe not.
     //res.sendFile(thetaskPath);
