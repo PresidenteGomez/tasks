@@ -61,7 +61,7 @@ function getTasks() {
 }
 
 function deleteTask (){
-    var thisId =$(this).parent().data('id');
+    var thisId = $(this).parent().data('id');
     console.log('in deleteTask', thisId);
     $.ajax({
         method: 'DELETE',
