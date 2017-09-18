@@ -1,14 +1,12 @@
 //requires
 var router = require('express').Router();
 var pool = require('../modules/pool');
-//var path = require('path');//WHY DONT WE NEED A PATH??
 
 //required routes
 router.get('/', function (req, res) {
     console.log('in GET thetask route');
-    //var thetaskPath = path.join(__dirname, '../public/views/index.html');
-    console.log('in GET thetask.js route');//add to thetaskPath into log??maybe not.
-    //res.sendFile(thetaskPath);
+    console.log('in GET thetask.js route');
+  
     pool.connect(function(connectionError, client, done){
         if(connectionError){
             console.log(connectionError);
@@ -27,7 +25,7 @@ router.get('/', function (req, res) {
                 } else{
                     //resultObj.rows contains the result set as an array of objects
                     console.log('resultObj.rows ->', resultObj.rows);
-                    res.send(resultObj.rows);
+                    res.status(200).send(resultObj.rows);
                 }
             });
         }
@@ -83,6 +81,7 @@ router.delete('/:id', function(req, res){
                 done();
                 if (queryError){
                     console.log(queryError);
+                    res.sendStatus(500);
                 }//end if
                 else{
                     res.sendStatus(202);
@@ -90,7 +89,34 @@ router.delete('/:id', function(req, res){
             });
         }
     });
-    res.sendStatus(202);
+});
+
+
+router.put('/:id', function(req, res){
+    console.log('in complete task route');
+    console.log('req.params.id ->', req.params.id);
+    var dbId = req.params.id;
+    console.log('error??');
+
+    //pool.connect
+    pool.connect(function (connectionError, client, done){
+        if(connectionError){
+            console.log('theres been a connection error', connectionError);
+            res.sendStatus(500);
+        } else {
+            client.query('UPDATE tasktable SET complete = true WHERE id=$1;', [dbId], function(queryError, result){
+                done();
+                if (queryError){
+                    console.log(queryError);
+                    res.sendStatus(500);
+                }//end if
+                else {
+                    res.sendStatus(202);
+                }//end else
+            });
+        }//end else
+    });
+
 });
 
 //exporting the router as a module???

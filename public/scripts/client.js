@@ -7,6 +7,7 @@ function onReady() {
     //3 params for things that are not yet on the DOM
     //event, class to watch for, function to run
     $('#allTasks').on('click', '.deleteMe', deleteTask)
+    $('#allTasks').on('click', '.completed', completeTask)
     //onReady get all tasks
     getTasks();
 }
@@ -28,10 +29,11 @@ function addTheTask(){
         data: taskObject, //data holds the values we want to send 
         success: function(serverResp){
             console.log('serverResp');
-            getTasks();
-        }
-    });
-}
+            getTasks(); //on success update the tasks in the DOM
+            $('#allTasks').val('');//empty input
+        }//end success
+    });//end $.ajax
+}//end addTheTask function
 
 // $.ajax functions
 function getTasks() {
@@ -47,12 +49,15 @@ function getTasks() {
             console.log('serverResp[i]', serverResp[i])
 
             //include data-id on the item Div
-            var $taskDiv = $('<div>', {text: serverResp[i].task}).data('id', serverResp[i].id);
+            var $taskDiv = $('<div>', { text: serverResp[i].task }).data('id', serverResp[i].id, '<br>',);
 
             //include a button with the class deleteMe
             var $delBtn = $('<input>', {type: 'button', class:'deleteMe', value:'Delete'});
-
             $taskDiv.append($delBtn);
+            if (serverResp[i].complete === false){
+                var $comBtn = $('<input>', { type: 'button', class: 'completed', value: 'Complete' });
+                $taskDiv.append($comBtn);
+            };
             $('#allTasks').append($taskDiv);
             }
         }
@@ -67,7 +72,21 @@ function deleteTask (){
         method: 'DELETE',
         url: '/thetask/' + thisId,
         success: function(resp){
-            console.log('server response is', resp);
+            console.log('deleted task -->', resp);
+            getTasks();
+        }
+    });
+}
+
+function completeTask (){
+    var thisId = $(this).parent().data('id');
+    console.log('in completeTask', thisId);
+    $.ajax({
+        method: 'PUT',
+        url: '/thetask/' + thisId,
+        success: function(resp){
+            console.log('completed task -->', resp);
+            getTasks();
         }
     });
 }
