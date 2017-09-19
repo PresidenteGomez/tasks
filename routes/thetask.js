@@ -56,7 +56,7 @@ router.post('/', function(req, res){
                    console.log(connectionError);
                    res.sendStatus(500);
                } else{
-                   res.sendStatus(201);
+                   res.send(resultObj);
                }
            });
        }
